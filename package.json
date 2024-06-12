@@ -2,8 +2,16 @@
     "name": "server",
     "packageManager": "yarn@4.2.2",
     "type": "module",
+    "exports": {
+        ".": {
+            "types": "./build/index.d.ts",
+            "import": "./build/index.js"
+        }
+    },
     "scripts": {
-        "start": "tsx src/index.ts"
+        "watch": "tsx watch --clear-screen=false --env-file=.env.dev src/index.ts",
+        "build": "rm -rf build & echo Building... & tsc --diagnostics",
+        "start": "node --env-file=.env.prod build/index.js"
     },
     "devDependencies": {
         "@eslint/js": "^9.4.0",

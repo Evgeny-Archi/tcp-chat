@@ -10,6 +10,15 @@ class Server extends MessageController {
             console.log('Server started on', server.address());
             console.log('Mode:', process.env.DEV ? 'DEV' : 'PROD');
         });
+        // process.on('SIGINT', () => {
+        //     console.log('\nServer shut down');
+        //     process.exitCode = 1;
+        //     process.exit();
+        // });
+        process.on('SIGINT', () => {
+            server.removeAllListeners();
+            process.exit(1);
+        });
     }
     private broadcast(socket: Socket) {
         console.log('Client connected');
@@ -20,6 +29,7 @@ class Server extends MessageController {
         this.on('message', sendData);
 
         socket.on('data', request => {
+            console.log(request.toString());
             this.sendMessage(request);
         });
 
